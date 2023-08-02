@@ -11,6 +11,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
+# Copy vendor directory
+COPY --from=composer /app/vendor ./vendor
 RUN npm run build && npm cache clean --force
 
 # Stage 3: Setup PHP and Laravel
