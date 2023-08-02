@@ -55,6 +55,12 @@ Migrate the database
 ./vendor/bin/sail php artisan migrate
 ```
 
+Install NPM dependancies
+
+```bash
+./vendor/bin/sail npm i
+```
+
 Run Vite
 
 ```bash
