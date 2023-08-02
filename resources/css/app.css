@@ -1,0 +1,36 @@
+@import './custom';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+[x-cloak] {
+    display: none;
+}
+
+
+@layer base {
+    .h1 {
+        @apply mt-2 text-4xl font-bold leading-7 sm:truncate sm:text-5xl;
+    }
+
+    .h2 {
+        @apply mt-2 text-3xl font-semibold leading-7 sm:truncate sm:text-4xl;
+    }
+
+    .h3 {
+        @apply mt-2 text-2xl font-medium leading-7 sm:text-3xl;
+    }
+
+    .h4 {
+        @apply mt-2 text-xl font-normal leading-7 sm:text-2xl;
+    }
+
+    .h5 {
+        @apply mt-2 text-lg font-normal leading-7 sm:text-xl;
+    }
+
+    .h6{
+        @apply mt-2 text-base font-normal leading-7 sm:text-lg;
+    }
+}
