@@ -19,5 +19,6 @@ php artisan route:cache
 # Run database migrations
 php artisan migrate --force
 
-# Finally, start PHP-FPM
+# Start Nginx and PHP-FPM
+nginx -g 'daemon off;' &
 exec php-fpm
