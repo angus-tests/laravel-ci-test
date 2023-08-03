@@ -3,6 +3,7 @@
 # Generate .env file
 echo "APP_NAME=${APP_NAME}" > .env
 echo "APP_ENV=${APP_ENV}" >> .env
+echo "APP_KEY=${APP_KEY}" > .env
 echo "DB_CONNECTION=${DB_CONNECTION}" >> .env
 echo "DB_HOST=${DB_HOST}" >> .env
 echo "DB_PORT=${DB_PORT}" >> .env
