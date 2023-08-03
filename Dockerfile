@@ -35,6 +35,6 @@ COPY --from=composer /app/vendor /var/www/html/vendor
 COPY . .
 COPY --from=frontend /app/public/build /var/www/html/public/build
 # Run artisan commands
-RUN php artisan key:generate --ansi && php artisan storage:link && php artisan config:cache && php artisan route:cache
+RUN php artisan storage:link && php artisan config:cache && php artisan route:cache
 CMD ["php-fpm"]
 EXPOSE 9000
