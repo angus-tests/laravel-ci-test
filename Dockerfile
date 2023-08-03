@@ -57,7 +57,7 @@ COPY prod.sh /start.sh
 RUN chmod +x /start.sh
 
 # Configure Nginx
-COPY nginx.conf /etc/nginx/http.d/app.conf
+COPY nginx.conf /etc/nginx/http.d/default.conf
 # Expose port 80
 EXPOSE 80
 
