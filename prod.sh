@@ -1,7 +1,10 @@
 #!/bin/sh
 
 # Generate .env file
-echo "APP_NAME=${APP_NAME}" > .env
+
+
+echo "APP_NAME=${APP_NAME}" >> .env
+echo "APP_URL=${APP_URL}" >> .env
 echo "APP_ENV=${APP_ENV}" >> .env
 echo "APP_KEY=${APP_KEY}" > .env
 echo "DB_CONNECTION=${DB_CONNECTION}" >> .env
