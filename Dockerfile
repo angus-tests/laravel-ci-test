@@ -48,6 +48,10 @@ COPY . /var/www/html
 # Set workdir
 WORKDIR /var/www/html
 
+# Set folder permissions for Laravel
+RUN chown -R www-data:www-data /var/www/html/storage \
+    && chown -R www-data:www-data /var/www/html/bootstrap/cache
+
 # Copy the shell script that generates the .env file and starts the app
 COPY prod.sh /start.sh
 RUN chmod +x /start.sh
