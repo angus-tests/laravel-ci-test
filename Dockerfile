@@ -49,17 +49,18 @@ COPY . /var/www/html
 WORKDIR /var/www/html
 
 # Set folder permissions for Laravel
-RUN chown -R www-data:www-data /var/www/html/storage \
-    && chown -R www-data:www-data /var/www/html/bootstrap/cache
+RUN chmod +rwx /var/www
+RUN chmod -R 777 /var/www
 
-# Copy the shell script that generates the .env file and starts the app
+# Copy our prod script and set permissions
 COPY prod.sh /start.sh
 RUN chmod +x /start.sh
 
-# Configure Nginx
+# Copy Nginx config file
 COPY nginx.conf /etc/nginx/http.d/default.conf
+
 # Expose port 80
 EXPOSE 80
 
-# Start Nginx and PHP-FPM services
-CMD /bin/sh /start.sh && nginx -g 'daemon off;'
+# Run our prod script
+CMD /bin/sh /start.sh

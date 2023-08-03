@@ -14,13 +14,26 @@ echo "DB_DATABASE=${DB_DATABASE}" >> .env
 echo "DB_USERNAME=${DB_USERNAME}" >> .env
 echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
 
-# Run artisan commands
-php artisan storage:link
-php artisan config:cache
+
+# Run our artisan commands
+
+php artisan route:clear
+
 php artisan route:cache
 
-# Run database migrations
+php artisan config:clear
+
+php artisan config:cache
+
+php artisan view:clear
+
+php artisan view:cache
+
+php artisan storage:link
+
 php artisan migrate --force
 
-# Finally, start PHP-FPM
-exec php-fpm
+php artisan optimize
+
+# Finally, start PHP-FPM and nginx
+php-fpm -D &&  nginx -g "daemon off;"
