@@ -4,3 +4,4 @@ README.md
 composer.lock
 node_modules
 tests
+.env
