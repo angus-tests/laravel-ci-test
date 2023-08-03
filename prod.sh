@@ -15,5 +15,8 @@ php artisan storage:link
 php artisan config:cache
 php artisan route:cache
 
+# Run database migrations
+php artisan migrate --force
+
 # Finally, start PHP-FPM
 exec php-fpm

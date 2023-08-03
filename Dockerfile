@@ -17,7 +17,8 @@ RUN npm run build && npm cache clean --force
 
 # Stage 3: Setup PHP and Laravel
 FROM php:8.2-fpm-alpine
-WORKDIR /var/www/html
+
+# Install system dependencies
 RUN apk update && apk add --no-cache \
     curl \
     zip \
@@ -25,20 +26,37 @@ RUN apk update && apk add --no-cache \
     git \
     oniguruma-dev \
     icu-dev \
-    libzip-dev
+    libzip-dev \
+    nginx
+
+# Configure PHP extensions
 RUN docker-php-ext-install \
     pdo_mysql \
     mbstring \
     zip \
     intl
+
+# Copy vendor files from composer stage
 COPY --from=composer /app/vendor /var/www/html/vendor
-COPY . .
+
+# Copy frontend build files
 COPY --from=frontend /app/public/build /var/www/html/public/build
 
-# Add the shell script that generates the .env file and starts the app
+# Copy project files
+COPY . /var/www/html
+
+# Set workdir
+WORKDIR /var/www/html
+
+# Copy the shell script that generates the .env file and starts the app
 COPY prod.sh /start.sh
 RUN chmod +x /start.sh
 
-CMD ["/start.sh"]
+# Configure Nginx
+COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 9000
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx and PHP-FPM services
+CMD /bin/sh /start.sh && nginx -g 'daemon off;'
