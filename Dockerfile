@@ -34,8 +34,6 @@ RUN docker-php-ext-install \
 COPY --from=composer /app/vendor /var/www/html/vendor
 COPY . .
 COPY --from=frontend /app/public/build /var/www/html/public/build
-# Copy .env.example to .env
-COPY .env.example .env
 # Run artisan commands
 RUN php artisan key:generate --ansi && php artisan storage:link && php artisan config:cache && php artisan route:cache
 CMD ["php-fpm"]
