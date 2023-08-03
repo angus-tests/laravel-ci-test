@@ -11,7 +11,6 @@ echo "DB_USERNAME=${DB_USERNAME}" >> .env
 echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
 
 # Run artisan commands
-php artisan key:generate
 php artisan storage:link
 php artisan config:cache
 php artisan route:cache
