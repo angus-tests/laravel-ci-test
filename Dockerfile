@@ -34,7 +34,11 @@ RUN docker-php-ext-install \
 COPY --from=composer /app/vendor /var/www/html/vendor
 COPY . .
 COPY --from=frontend /app/public/build /var/www/html/public/build
-# Run artisan commands
-RUN php artisan storage:link && php artisan config:cache && php artisan route:cache
-CMD ["php-fpm"]
+
+# Add the shell script that generates the .env file and starts the app
+COPY prod.sh /start.sh
+RUN chmod +x /start.sh
+
+CMD ["/start.sh"]
+
 EXPOSE 9000
