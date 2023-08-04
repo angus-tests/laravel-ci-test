@@ -5,6 +5,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 
 class RoleSeeder extends Seeder
@@ -19,11 +20,11 @@ class RoleSeeder extends Seeder
     public function run()
     {
 
-      DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+      Schema::disableForeignKeyConstraints();
       //Clear data
-      User::truncate();
-      Role::truncate();
-      DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+      User::query()->delete();
+      Role::query()->delete();
+      Schema::enableForeignKeyConstraints();
 
 
       // User
