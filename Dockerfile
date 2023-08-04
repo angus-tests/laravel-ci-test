@@ -2,7 +2,6 @@
 FROM composer:2 as composer_prod
 WORKDIR /app
 COPY . .
-RUN mkdir -p bootstrap/cache
 RUN composer install --no-interaction --no-dev --prefer-dist --optimize-autoloader
 RUN rm -rf /root/.composer/cache
 
@@ -10,7 +9,6 @@ RUN rm -rf /root/.composer/cache
 FROM composer:2 as composer_test
 WORKDIR /app
 COPY . .
-RUN mkdir -p bootstrap/cache
 RUN composer install --no-interaction
 RUN rm -rf /root/.composer/cache
 
@@ -46,7 +44,6 @@ RUN docker-php-ext-install \
 
 # Copy vendor files from composer stage
 COPY --from=composer_prod /app/vendor /var/www/html/vendor
-COPY --from=composer_prod /app/bootstrap/cache /var/www/html/bootstrap/cache
 
 # Copy frontend build files
 COPY --from=frontend /app/public /var/www/html/public
@@ -82,7 +79,6 @@ FROM prod AS test
 
 # Copy test vendor files from composer stage
 COPY --from=composer_test /app/vendor /var/www/html/vendor
-COPY --from=composer_test /app/bootstrap/cache /var/www/html/bootstrap/cache
 
 # Copy test project files
 COPY tests /var/www/html/tests
