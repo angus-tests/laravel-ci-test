@@ -2,7 +2,7 @@
 
 
 # Create .env file from environment variables
-RUN printenv | grep -v "no_proxy" > .env
+printenv | grep -v "no_proxy" > .env
 
 # Run our artisan commands
 php artisan route:clear
