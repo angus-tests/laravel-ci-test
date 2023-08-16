@@ -1,12 +1,13 @@
 name: CI Pipeline
 
 on:
+  workflow_dispatch: 
   pull_request:
     branches:
       - main
 
 env:
-  IMAGE_NAME: laravellous-test-image
+  IMAGE_NAME: laravellous-test-image # Needs to be lowercase
   REGISTRY: ghcr.io
 
 jobs:
@@ -16,23 +17,26 @@ jobs:
     environment: testing # The Github environment to use
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: Convert repository name to lowercase
+        run: echo "REPO_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       #- name: create env.testing file # - Uncomment this to load testing env vars from secrets (then add --env-file .env.testing to docker run below)
         #run: echo "${{ secrets.ENV_FILE_TESTING }}" > .env.testing
 
       - name: Build Docker image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           context: .
           push: false
-          tags: ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:testing
+          tags: ${{ env.REGISTRY }}/${{env.REPO_NAME}}/${{ env.IMAGE_NAME }}:testing
           load: true
           target: test # Target the test build target in the Dockerfile
 
 
       - name: Run Tests
         run: |
-          docker run -d --name my_container ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:testing
+          docker run --name my_container ${{ env.REGISTRY }}/${{ env.REPO_NAME }}/${{ env.IMAGE_NAME }}:testing
 
 

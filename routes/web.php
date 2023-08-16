@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StorageController;
 use Inertia\Inertia;
 
 /*
@@ -23,6 +24,10 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 })->name('index');
+
+//Storage
+Route::get('/images/{path}', [StorageController::class, 'image'])->where('path', '.*');
+Route::get('/storage/{path}', [StorageController::class, 'storage'])->where('path', '.*');
 
 Route::middleware([
     'auth:sanctum',

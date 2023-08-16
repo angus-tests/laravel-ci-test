@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 # Create .env file from environment variables
 printenv | awk -F "=" 'NF==2 && $2 !~ /[\n\t ]/' > .env
 
@@ -8,8 +7,6 @@ printenv | awk -F "=" 'NF==2 && $2 !~ /[\n\t ]/' > .env
 php artisan route:clear
 php artisan config:clear
 php artisan view:clear
-
-php artisan storage:link
 
 php artisan migrate --force
 

@@ -54,24 +54,27 @@ COPY . /var/www/html
 # Set workdir
 WORKDIR /var/www/html
 
-# Remove the 'tests' directory (to ensure they are not in prod image, they can be added back later for testing)
-RUN rm -rf /var/www/html/tests
-
-# Set folder permissions for Laravel
-RUN chmod -R 777 /var/www/html/storage 
-
 # Copy our prod script and set permissions
 COPY start_prod.sh /start.sh
 RUN chmod +x /start.sh
 
-# Change the owner group of the directories to www-data
-RUN chown -R :www-data /var/www/html && chmod -R g+rwxs /var/www/html
+# Remove the 'tests' directory (to ensure they are not in prod image, they can be added back later for testing)
+RUN rm -rf /var/www/html/tests
 
-# Set group permissions
-RUN chmod -R 775 /var/www/html
+
+#-----Setup permissions------
+RUN addgroup -g 1000 web
+
+RUN addgroup nginx web && \
+    addgroup www-data web
+
+RUN chown -R www-data:web /var/www/html && \
+    chmod -R g+rwxs /var/www/html && \
+    chmod -R 775 /var/www/html
+
 
 # Copy Nginx config file
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/http.d/default.conf
 
 # Expose port 80
 EXPOSE 80
@@ -91,9 +94,6 @@ COPY tests /var/www/html/tests
 
 # Copy testing .env file to use as the main .env
 COPY .env.testing /var/www/html/.env
-
-# Create sqlite test database
-RUN touch /var/www/html/database/database.sqlite
 
 # Copy our testing script and set permissions
 COPY start_tests.sh /start.sh
